@@ -18,10 +18,11 @@ export default function Home() {
   const [resultado, setResultado] = useState<any>(null);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUser(user);
-    });
-  }, []);
+  const supabase = getSupabase();
+  supabase.auth.getUser().then(({ data: { user } }: { data: { user: any } }) => {
+    setUser(user);
+  });
+}, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -31,9 +32,10 @@ export default function Home() {
   };
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    window.location.href = "/login";
-  };
+  const supabase = getSupabase();
+  await supabase.auth.signOut();
+  window.location.href = "/login";
+};
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
